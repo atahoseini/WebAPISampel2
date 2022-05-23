@@ -6,48 +6,49 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
-        private readonly IProductService productService;
+        private readonly IEmployeeService employeeService;
 
-        public ProductController(IProductService productService)
+        public EmployeeController(IEmployeeService EmployeeService)
         {
-            this.productService=productService;
+            this.employeeService=employeeService;
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var result=await productService.Get(id);
+            var result = await employeeService.Get(id);
             return Ok(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result=await productService.GetAll();
-            return Ok(result);
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> Add(ProductDto model)
-        {
-            var result= await productService.Add(model);
+            var result = await employeeService.GetAll();
             return Ok(result);
         }
 
-        [HttpPut()]
-        public async Task<IActionResult> Edit(ProductDto model)
+        [HttpPost]
+        public async Task<IActionResult> Add(EmployeeDto model)
         {
-            var result= productService.Update(model);
-            if(result.IsCompletedSuccessfully)
+            var result = await employeeService.Add(model);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(EmployeeDto model)
+        {
+            var result = employeeService.Update(model);
+            if (result.IsCompletedSuccessfully)
                 return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = productService.Delete(id);
+            var result = employeeService.Delete(id);
             return Ok(result);
         }
     }

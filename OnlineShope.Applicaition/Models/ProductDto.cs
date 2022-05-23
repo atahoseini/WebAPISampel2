@@ -11,5 +11,5 @@ namespace OnlineShope.Applicaition.Models
         public int Id { get; set; }
         public string ProductName { get; set; }
         public long Price { get; set; }
-    }
+    }   
 }

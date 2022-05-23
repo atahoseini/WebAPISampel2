@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 
 namespace OnlineShope.Applicaition.Services
 {
@@ -58,5 +58,48 @@ namespace OnlineShope.Applicaition.Services
             }).ToListAsync();
             return await result;
         }
+
+        public async Task<ProductDto> Delete(int id)
+        {
+            var result = await dbContext.Products
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (result != null)
+            {
+                dbContext.Products.Remove(result);
+                await dbContext.SaveChangesAsync();
+                var productMode = new ProductDto
+                {
+                    Id = result.Id,
+                    Price= result.Price,
+                    ProductName=result.ProductName
+                };
+                return productMode;
+            }
+
+            return null;
+        }
+
+        public async Task<ProductDto> Update(ProductDto model)
+        {
+            var result = await dbContext.Products
+              .FirstOrDefaultAsync(e => e.Id == model.Id);
+
+            if (result != null)
+            {
+                result.ProductName = model.ProductName;
+                 result.Price = model.Price;
+                await dbContext.SaveChangesAsync();
+                ProductDto product = new ProductDto
+                {
+                    Id=model.Id,
+                    Price = model.Price,
+                    ProductName= model.ProductName
+                };
+                return product;
+            }
+
+            return null;
+        }
     }
+
 }

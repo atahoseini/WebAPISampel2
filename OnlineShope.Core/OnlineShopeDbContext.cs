@@ -17,6 +17,11 @@ namespace OnlineShope.Core
 
         //public DbSet<Product> Products { get; set; }
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<City> Cities => Set<City>();
+        public DbSet<Employee> Employees => Set<Employee>();
+        public DbSet<Province> Provinces => Set<Province>();
+        public DbSet<Supplier> Suppliers => Set<Supplier>();
+        public DbSet<Customer> Customers => Set<Customer>();
 
     }
 }

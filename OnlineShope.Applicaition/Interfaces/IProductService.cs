@@ -12,5 +12,7 @@ namespace OnlineShope.Applicaition.Interfaces
         Task<List<ProductDto>> GetAll();
         Task<ProductDto> Get(int id);
         Task<ProductDto> Add(ProductDto model);
+        Task<ProductDto> Update(ProductDto model);
+        Task<ProductDto> Delete(int id);
     }
 }
