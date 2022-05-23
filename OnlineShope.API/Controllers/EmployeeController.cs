@@ -36,20 +36,20 @@ namespace OnlineShope.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit(EmployeeDto model)
-        {
-            var result = employeeService.Update(model);
-            if (result.IsCompletedSuccessfully)
-                return Ok(result);
-            return BadRequest(result);
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> Edit(EmployeeDto model)
+        //{
+        //    var result = employeeService.Update(model);
+        //    if (result.IsCompletedSuccessfully)
+        //        return Ok(result);
+        //    return BadRequest(result);
+        //}
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = employeeService.Delete(id);
-            return Ok(result);
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = employeeService.Delete(id);
+        //    return Ok(result);
+        //}
     }
 }

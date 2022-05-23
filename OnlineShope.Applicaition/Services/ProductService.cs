@@ -38,14 +38,19 @@ namespace OnlineShope.Applicaition.Services
         public async Task<ProductDto> Get(int id)
         {
             var product = await dbContext.Products.FindAsync(id);
-            var model = new ProductDto
+            if (product != null)
             {
-                ProductName = product.ProductName,
-                Id = product.Id,
-                Price = product.Price,
+                var model = new ProductDto
+                {
+                    ProductName = product.ProductName,
+                    Id = product.Id,
+                    Price = product.Price,
 
-            };
-            return model;
+                };
+                return model;
+            }
+            else
+                return null;
         }
 
         public async Task<List<ProductDto>> GetAll()
