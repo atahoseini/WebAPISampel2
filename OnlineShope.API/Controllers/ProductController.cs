@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace OnlineShope.API.Controllers
 {
@@ -15,6 +16,7 @@ namespace OnlineShope.API.Controllers
             this.productService=productService;
         }
         [HttpGet("{id}")]
+        [SwaggerOperation("GetAllAdresses")]
         public async Task<IActionResult> Get(int id)
         {
             var result=await productService.Get(id);

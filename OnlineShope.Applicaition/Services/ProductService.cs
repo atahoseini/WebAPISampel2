@@ -61,6 +61,9 @@ namespace OnlineShope.Applicaition.Services
                 ProductName = Product.ProductName,
                 Id=Product.Id,
             }).ToListAsync();
+
+            //Automapper
+
             return await result;
         }
 

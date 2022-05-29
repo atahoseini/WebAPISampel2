@@ -9,9 +9,9 @@ namespace OnlineShope.Core.Entities
 {
     public class Product
     {
-        [Key]
+        //[Key]
         public int Id { get; set; }
-        [MaxLength(100), Required]
+       // [MaxLength(100), Required]
         public string ProductName { get; set; }
         public long Price { get; set; }
     }
