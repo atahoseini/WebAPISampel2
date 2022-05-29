@@ -36,6 +36,9 @@ namespace OnlineShope.Core
         public DbSet<Province> Provinces => Set<Province>();
         public DbSet<Supplier> Suppliers => Set<Supplier>();
         public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<User> Users => Set<User>();
+
+
 
     }
 }

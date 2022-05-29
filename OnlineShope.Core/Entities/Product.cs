@@ -14,5 +14,7 @@ namespace OnlineShope.Core.Entities
        // [MaxLength(100), Required]
         public string ProductName { get; set; }
         public long Price { get; set; }
+        public long? PriceWithComma { get; set; }
+
     }
 }

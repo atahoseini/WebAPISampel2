@@ -1,9 +1,14 @@
 using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using OnlineShope.Applicaition;
+using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Command;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Services;
 using OnlineShope.Core;
+using OnlineShope.Core.IRepositories;
+using OnlineShope.Infrastructure.Repository;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,16 +19,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-//builder.Services.AddSwaggerGen(c =>
-//{
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Online Store API", Version = "v1" });
+    c.EnableAnnotations();
+});
 
-//});
+builder.Services.AddMediatR(typeof(SaveProductCommand));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//var config = new AutoMapper.MapperConfiguration(c =>
+//  {
+//      c.AddProfile<AutomapperConfig>();
+//  });
 
-var config = new AutoMapper.MapperConfiguration(c =>
-  {
-      c.AddProfile<AutomapperConfig>();
-  });
+//register AutoMapper
+var config = new AutoMapper.MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AutomapperConfig());
+});
 
 builder.Services.AddDbContext<OnlineShopDbContext>(options =>
 {
