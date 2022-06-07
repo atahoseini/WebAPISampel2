@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShope.Core.Entities;
+using OnlineShope.Core.Entities.Security;
 using OnlineShope.Core.FluentAPIConfiguration;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,11 @@ namespace OnlineShope.Core
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<User> Users => Set<User>();
 
+        public DbSet<PermisionGroup> permisionGroups => Set<PermisionGroup>();
+        public DbSet<Permission> permissions => Set<Permission>();
+        public DbSet<Role> roles => Set<Role>();
+        public DbSet<RolePermision> rolePermision => Set<RolePermision>();
+        public DbSet<UserRole> userRoles => Set<UserRole>();
 
 
     }
