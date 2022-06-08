@@ -6,6 +6,7 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
     public class ProductCQRSController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -14,10 +15,12 @@ namespace OnlineShope.API.Controllers
         {
             this.mediator=mediator;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Create(SaveProductCommand saveProductCommand)
-        //{
-        //    var result=await mediator.Send(saveProductCommand);
-        //}
+ 
+        [HttpPost]
+        public async Task<IActionResult> Create(SaveProductCommand saveProductCommand)
+        {
+            var result=await mediator.Send(saveProductCommand);
+            return Ok(result);
+        }
     }
 }

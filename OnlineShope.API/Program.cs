@@ -9,6 +9,7 @@ using OnlineShope.Applicaition.Services;
 using OnlineShope.Core;
 using OnlineShope.Core.IRepositories;
 using OnlineShope.Infrastructure.Repository;
+using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,17 +28,17 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddMediatR(typeof(SaveProductCommand));
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-//var config = new AutoMapper.MapperConfiguration(c =>
-//  {
-//      c.AddProfile<AutomapperConfig>();
-//  });
 
 //register AutoMapper
 var config = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AutomapperConfig());
 });
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 
 builder.Services.AddDbContext<OnlineShopDbContext>(options =>
 {

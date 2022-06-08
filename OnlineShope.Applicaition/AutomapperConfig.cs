@@ -24,6 +24,7 @@ namespace OnlineShope.Applicaition
             //CreateMap<Product,GetProductQueryResponse>()
             //    .ForMember(des=>des.PriceWithComma,)
 
+
         }
     }
 }

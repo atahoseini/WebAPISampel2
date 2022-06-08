@@ -28,6 +28,8 @@ namespace OnlineShope.Core
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+
         }
 
         //public DbSet<Product> Products { get; set; }

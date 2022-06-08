@@ -16,12 +16,12 @@ namespace OnlineShope.API.Controllers
             this.productService=productService;
         }
         [HttpGet("{id}")]
-        [SwaggerOperation(
-          Summary = "Get a Product",
-          Description = "Get a Product with id",
-          OperationId = "Products.Get",
-          Tags = new[] { "ProductController" })
-        ]
+        //[SwaggerOperation(
+        //  Summary = "Get a Product",
+        //  Description = "Get a Product with id",
+        //  OperationId = "Products.Get",
+        //  Tags = new[] { "ProductController" })
+        //]
 
         public async Task<IActionResult> Get(int id)
         {
