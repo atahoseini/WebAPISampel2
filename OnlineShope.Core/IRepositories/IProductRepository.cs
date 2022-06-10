@@ -9,9 +9,9 @@ namespace OnlineShope.Core.IRepositories
 {
     public interface IProductRepository
     {
-        Task<Product> Get(int id);
-        Task<List<Product>> GetAll();
-        Task<int> Insert(Product product);
+        Task<Product> GetAsync(int id);
+        Task<List<Product>> GetAllAsync();
+        Task<int> InsertAsync(Product product);
 
     }
 }

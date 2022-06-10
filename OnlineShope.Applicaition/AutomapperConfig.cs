@@ -24,7 +24,12 @@ namespace OnlineShope.Applicaition
             //CreateMap<Product,GetProductQueryResponse>()
             //    .ForMember(des=>des.PriceWithComma,)
 
+            CreateMap<Product, GetProductQueryResponse>()
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.ProductName.ToUpper()))
+            .ForMember(dest => dest.PriceWithComma, opt => opt.MapFrom(src => String.Format("{0:n0}", src.Price)));
 
         }
+
+
     }
 }

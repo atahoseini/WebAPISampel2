@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShope.Infrastructure.UnitOfWork
+namespace OnlineShope.Infrastructure.UnitOfWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -16,6 +16,12 @@ namespace OnlineShope.Infrastructure.UnitOfWork
         {
             this.onlineShopDbContext=onlineShopDbContext;
         }
+
+        public void Dispose()
+        {
+            onlineShopDbContext.Dispose();
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await this.onlineShopDbContext.SaveChangesAsync();

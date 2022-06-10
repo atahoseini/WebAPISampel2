@@ -8,6 +8,7 @@ using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Services;
 using OnlineShope.Core;
 using OnlineShope.Core.IRepositories;
+using OnlineShope.Infrastructure;
 using OnlineShope.Infrastructure.Repository;
 using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
@@ -18,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -29,7 +31,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddMediatR(typeof(SaveProductCommand));
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddRepositories();
+builder.Services.AddUnitOfWork();
 
 //register AutoMapper
 var config = new AutoMapper.MapperConfiguration(cfg =>

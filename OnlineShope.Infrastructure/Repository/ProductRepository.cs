@@ -17,17 +17,17 @@ namespace OnlineShope.Infrastructure.Repository
         {
             this.onlineShopDbContext=onlineShopDbContext;
         }
-        public async Task<Product> Get(int id)
+        public async Task<Product> GetAsync(int id)
         {
             return await onlineShopDbContext.Products.FindAsync(id);
         }
 
-        public Task<List<Product>> GetAll()
+        public Task<List<Product>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<int> Insert(Product product)
+        public async Task<int> InsertAsync(Product product)
         {
             await onlineShopDbContext.Products.AddAsync(product);   
             //await onlineShopDbContext.SaveChangesAsync();

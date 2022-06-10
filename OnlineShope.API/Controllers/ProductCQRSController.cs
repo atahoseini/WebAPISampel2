@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Command;
+using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Query;
 
 namespace OnlineShope.API.Controllers
 {
@@ -15,11 +16,18 @@ namespace OnlineShope.API.Controllers
         {
             this.mediator=mediator;
         }
- 
+
         [HttpPost]
         public async Task<IActionResult> Create(SaveProductCommand saveProductCommand)
         {
-            var result=await mediator.Send(saveProductCommand);
+            var result = await mediator.Send(saveProductCommand);
+            return Ok(result);
+        }
+
+        [HttpGet("id")]
+        public async Task<IActionResult> Get([FromQuery]GetProductQuery getProductQuery)
+        {
+            var result=await mediator.Send(getProductQuery);
             return Ok(result);
         }
     }

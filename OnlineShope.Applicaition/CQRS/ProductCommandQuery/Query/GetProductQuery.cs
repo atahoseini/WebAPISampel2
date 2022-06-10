@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using OnlineShope.Core.IRepositories;
+using OnlineShope.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,20 +22,22 @@ namespace OnlineShope.Applicaition.CQRS.ProductCommandQuery.Query
         public string PriceWithComma { get; set; }
     }
 
-    public class ProductQueryHandler //: IRequestHandler<GetProductQuery, GetProductQueryResponse>
+    public class ProductQueryHandler : IRequestHandler<GetProductQuery, GetProductQueryResponse>
     {
-        //private readonly IProductRepository productRepository;
+        private readonly IProductRepository productRepository;
+        private readonly IMapper mapper;
 
-        //public ProductQueryHandler(IProductRepository productRepository, IMapper mapper)
-        //{
-        //    this.productRepository=productRepository;
-        //    Mapper=mapper;
-        //}
+        public ProductQueryHandler(IProductRepository productRepository, IMapper mapper)
+        {
+            this.productRepository=productRepository;
+            this.mapper=mapper;
+        }
+        public async Task<GetProductQueryResponse> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        {
+            var product= await productRepository.GetAsync(request.Id);
+            var response= mapper.Map<GetProductQueryResponse>(product);
+            return response;
 
-
-        ////public Task<GetProductQueryResponse> Handle(GetProductQuery request, CancellationToken cancellationToken)
-        ////{
-
-        ////}
+        }
     }
 }

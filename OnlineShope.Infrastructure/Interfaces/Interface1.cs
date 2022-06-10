@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShope.Infrastructure.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         Task<int> SaveChangesAsync();
     }
