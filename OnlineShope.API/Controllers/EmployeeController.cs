@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 
@@ -6,11 +7,13 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService employeeService;
 
-        public EmployeeController(IEmployeeService EmployeeService)
+        public EmployeeController(IEmployeeService employeeService)
         {
             this.employeeService=employeeService;
         }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OnlineShope.Core.IRepositories;
 using OnlineShope.Core.Utilitiy;
 using OnlineShope.Infrastructure.Interfaces;
+using OnlineShope.Infrastructure.Model;
 using OnlineShope.Infrastructure.Repository;
 using OnlineShope.Infrastructure.UnitOfWorks;
 using System;
@@ -28,5 +30,5 @@ namespace OnlineShope.Infrastructure
         {
             service.AddSingleton<EncryptionUtility>();
         }
-    }
+   }
 }

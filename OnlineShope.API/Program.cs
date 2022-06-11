@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using OnlineShope.API;
 using OnlineShope.Applicaition;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Command;
 using OnlineShope.Applicaition.Interfaces;
@@ -9,32 +10,38 @@ using OnlineShope.Applicaition.Services;
 using OnlineShope.Core;
 using OnlineShope.Core.IRepositories;
 using OnlineShope.Infrastructure;
+using OnlineShope.Infrastructure.Model;
 using OnlineShope.Infrastructure.Repository;
 using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
+builder.Services.AddOptions();
+builder.Services.Configure<Configs>(builder.Configuration.GetSection("Configs"));
 
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Online Store API", Version = "v1" });
-    c.EnableAnnotations();
-});
+
+
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Online Store API", Version = "v1" });
+//    c.EnableAnnotations();
+//});
+
+
 
 builder.Services.AddMediatR(typeof(SaveProductCommand));
 
 builder.Services.AddRepositories();
 builder.Services.AddUnitOfWork();
+builder.Services.AddInfraUtility();
 
-//register AutoMapper
 var config = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AutomapperConfig());
@@ -48,6 +55,9 @@ builder.Services.AddDbContext<OnlineShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineShopConnection"));
 });
 
+builder.Services.AddJWT();
+builder.Services.AddSwagger();
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
@@ -55,7 +65,6 @@ builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -64,7 +73,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Command;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Query;
@@ -7,6 +8,7 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
 
     public class ProductCQRSController : ControllerBase
     {

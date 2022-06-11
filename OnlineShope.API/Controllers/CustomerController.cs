@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 
@@ -6,6 +7,8 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService customerService;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,6 +8,7 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;

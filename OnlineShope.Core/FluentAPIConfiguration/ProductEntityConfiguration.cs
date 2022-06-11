@@ -22,16 +22,5 @@ namespace OnlineShope.Core.FluentAPIConfiguration
                 .HasColumnOrder(1);
         }
     }
-    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
-    {
-        public void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder.ToTable("Users");
-            builder.HasKey(s => s.Id);
-            builder.Property(p => p.UserName)
-                .IsRequired()
-                .HasMaxLength(64);
-        }
-    }
 
 }
