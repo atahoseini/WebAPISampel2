@@ -31,5 +31,13 @@ namespace OnlineShope.API.Controllers
             var result = await mediator.Send(registerCommand);
             return Ok(result);
         }
+
+
+        [HttpPost("generateToken")]
+        public async Task<IActionResult> GenerateNewToken(GenerateNewTokenCommand generateNewTokenCommand)
+        {
+            var result = await mediator.Send(generateNewTokenCommand);
+            return Ok(result);
+        }
     }
 }

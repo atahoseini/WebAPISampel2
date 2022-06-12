@@ -29,6 +29,7 @@ namespace OnlineShope.Core
         {
             modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRefreshTokenEntityConfiguration());
 
         }
 
@@ -40,7 +41,7 @@ namespace OnlineShope.Core
         public DbSet<Supplier> Suppliers => Set<Supplier>();
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<User> Users => Set<User>();
-
+        public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
         public DbSet<PermisionGroup> permisionGroups => Set<PermisionGroup>();
         public DbSet<Permission> permissions => Set<Permission>();
         public DbSet<Role> roles => Set<Role>();

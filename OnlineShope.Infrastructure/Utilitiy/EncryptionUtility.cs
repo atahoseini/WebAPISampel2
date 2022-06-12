@@ -36,6 +36,12 @@ namespace OnlineShope.Core.Utilitiy
             }
         }
 
+        public string GetnewRefreshToken()
+        {
+            return Guid.NewGuid().ToString();
+
+        }
+
         public string GetNewSalt()
         {
             return Guid.NewGuid().ToString();

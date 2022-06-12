@@ -15,4 +15,5 @@ namespace OnlineShope.Core.Entities
         public DateTime RegisterDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
     }
+
 }

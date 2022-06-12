@@ -10,5 +10,6 @@ namespace OnlineShope.Infrastructure.Model
     {
         public string TokenKey { get; set; }
         public int TokenTimeout { get; set; }
+        public int RefreshTokenTimout { get; set; }
     }
 }
