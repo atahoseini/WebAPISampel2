@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OnlineShope.Core;
-using OnlineShope.Core.Entities;
+using OnlineShope.Core.Entities.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;

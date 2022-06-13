@@ -8,6 +8,7 @@ using OnlineShope.Applicaition.CQRS.Notifications;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Query;
 using OnlineShope.Applicaition.Models;
 using OnlineShope.Core.Entities;
+using OnlineShope.Core.Entities.Security;
 
 namespace OnlineShope.Applicaition
 {

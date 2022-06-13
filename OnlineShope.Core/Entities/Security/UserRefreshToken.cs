@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShope.Core.Entities;
+namespace OnlineShope.Core.Entities.Security;
 
 public class UserRefreshToken
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using OnlineShope.Core;
-using OnlineShope.Core.Entities;
+using OnlineShope.Core.Entities.Security;
 using OnlineShope.Core.Utilitiy;
 
 namespace OnlineShope.Applicaition.CQRS.AuthenticateCommandQuery.Command

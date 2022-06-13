@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShope.API.CustomAttributes;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 using Swashbuckle.AspNetCore.Annotations;
@@ -39,7 +40,8 @@ namespace OnlineShope.API.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add(ProductDto model)
+        [AccessControl( Permission ="product-add")]
+        public async Task<IActionResult> Create(ProductDto model)
         {
             var result= await productService.Add(model);
             return Ok(result);

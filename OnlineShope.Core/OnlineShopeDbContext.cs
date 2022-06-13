@@ -42,11 +42,10 @@ namespace OnlineShope.Core
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<User> Users => Set<User>();
         public DbSet<UserRefreshToken> UserRefreshTokens => Set<UserRefreshToken>();
-        public DbSet<PermisionGroup> permisionGroups => Set<PermisionGroup>();
-        public DbSet<Permission> permissions => Set<Permission>();
-        public DbSet<Role> roles => Set<Role>();
-        public DbSet<RolePermision> rolePermision => Set<RolePermision>();
-        public DbSet<UserRole> userRoles => Set<UserRole>();
+        public DbSet<Permission> Permissions => Set<Permission>();
+        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<RolePermision> RolePermision => Set<RolePermision>();
+        public DbSet<UserRole> UserRoles => Set<UserRole>();
 
 
     }

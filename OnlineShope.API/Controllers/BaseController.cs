@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace OnlineShope.API.Controllers
+namespace OnlineShope.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+[Authorize]
+public class BaseController : ControllerBase
 {
-    public class BaseController : ControllerBase
-    {
- 
-    }
+
 }

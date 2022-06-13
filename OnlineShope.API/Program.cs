@@ -57,11 +57,9 @@ builder.Services.AddDbContext<OnlineShopDbContext>(options =>
 
 builder.Services.AddJWT();
 builder.Services.AddSwagger();
+builder.Services.AddApplicaitionServices();
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
