@@ -22,10 +22,6 @@ public class AccessControlAttribute : ActionFilterAttribute
         //nokte aval khondan az kash ast ---
         // ya khondan az yek service ke sar akhar bege true ya false ast va kash ham dar on bekhone
 
-
-
-
-
         //1- inject IPermissionServices
         //2- Call checkPermission from IPermimissionServices
 

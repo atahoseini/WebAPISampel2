@@ -40,11 +40,40 @@ namespace OnlineShope.API.Controllers
         }
         
         [HttpPost]
-        [AccessControl( Permission ="product-add")]
-        public async Task<IActionResult> Create(ProductDto model)
+        //[AccessControl( Permission ="product-add")]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> Create([FromForm]ProductDto model)
         {
             var result= await productService.Add(model);
             return Ok(result);
+        }
+
+
+        [HttpPost("upload")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Upload(IFormFile thumbnail)
+        {
+            //1-save to byte
+            //1-save to byte[]
+            using (var target = new MemoryStream())
+            {
+                thumbnail.CopyTo(target);
+                var thumbnailByteArray = target.ToArray();
+            }
+
+            //2-save in folders
+            string filePath = @"E:\";
+            FileInfo fileInfo = new FileInfo(thumbnail.FileName);
+            string fileName = thumbnail.FileName + fileInfo.Extension;
+
+            string fileNameWithPath = Path.Combine(filePath, fileName);
+
+            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                thumbnail.CopyTo(stream);
+            }
+            return Ok();
         }
 
         //[HttpPut]

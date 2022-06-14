@@ -6,6 +6,7 @@ using OnlineShope.Infrastructure.Interfaces;
 using OnlineShope.Infrastructure.Model;
 using OnlineShope.Infrastructure.Repository;
 using OnlineShope.Infrastructure.UnitOfWorks;
+using OnlineShope.Infrastructure.Utilitiy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace OnlineShope.Infrastructure
         public static void AddInfraUtility(this IServiceCollection service)
         {
             service.AddSingleton<EncryptionUtility>();
+            service.AddSingleton<MyFileUtility>();
         }
+
    }
 }

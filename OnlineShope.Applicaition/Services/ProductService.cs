@@ -4,7 +4,7 @@ using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 using OnlineShope.Core;
 using OnlineShope.Core.Entities;
-
+using OnlineShope.Infrastructure.Utilitiy;
 
 namespace OnlineShope.Applicaition.Services
 {
@@ -12,24 +12,28 @@ namespace OnlineShope.Applicaition.Services
     {
         private readonly OnlineShopDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly MyFileUtility myFileUtility;
 
-
-        public ProductService(OnlineShopDbContext dbContext, IMapper mapper)
+        public ProductService(OnlineShopDbContext dbContext, IMapper mapper, MyFileUtility myFileUtility)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.myFileUtility=myFileUtility;
         }
         public async Task<ProductDto> Add(ProductDto model)
         {
-            //var product = new Product
-            //{
-            //    ProductName = model.ProductName,
-            //    Price=model.Price,
-            //};
-
-            var product = mapper.Map<Product>(model);
-
-            //dbContext.Products.Add(product);
+            //بخش ذخیره تصوریر در جلسه هفتم
+            var product = new Product
+            {
+                ProductName = model.ProductName,
+                Price=model.Price,
+                //db=>byte[]
+                Thubmnail=myFileUtility.ConvertToByteArray(model.Thumbnail),
+                ThumbnailFileExtension=myFileUtility.GetFileExtension(model.Thumbnail.FileName),
+                ThumbnailFileName= model.Thumbnail.FileName,
+                ThumbnailFileSize=model.Thumbnail.Length,
+            };
+            //var product = mapper.Map<Product>(model);
             await dbContext.AddAsync(product);
             await dbContext.SaveChangesAsync();
             model.Id = product.Id;
@@ -58,7 +62,7 @@ namespace OnlineShope.Applicaition.Services
 
         public async Task<List<ProductDto>> GetAll()
         {
-            var result =await dbContext.Products.Select(Product => new ProductDto
+            var result = await dbContext.Products.Select(Product => new ProductDto
             {
                 Price = Product.Price,
                 ProductName = Product.ProductName,
