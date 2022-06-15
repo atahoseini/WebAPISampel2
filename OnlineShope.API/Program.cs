@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using OnlineShope.API;
 using OnlineShope.Applicaition;
@@ -18,8 +19,16 @@ using static System.Net.Mime.MediaTypeNames;
 
 
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
 
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    ApplicationName = typeof(Program).Assembly.FullName,
+    ContentRootPath = Path.GetFullPath(Directory.GetCurrentDirectory()),
+    WebRootPath = Path.GetFullPath(Directory.GetCurrentDirectory()),
+    Args = args
+});
 
 builder.Services.AddOptions();
 builder.Services.Configure<Configs>(builder.Configuration.GetSection("Configs"));
@@ -58,6 +67,19 @@ builder.Services.AddDbContext<OnlineShopDbContext>(options =>
 builder.Services.AddJWT();
 builder.Services.AddSwagger();
 builder.Services.AddApplicaitionServices();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAPI",
+      builder =>
+      {
+          builder.WithOrigins("*");
+          builder.WithHeaders("*");
+          builder.WithMethods("*");
+      });
+});
+
 
 builder.Services.AddMemoryCache();
 
@@ -68,7 +90,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.WebRootPath, "Media")),
+    RequestPath = "/Media"
+});
 
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

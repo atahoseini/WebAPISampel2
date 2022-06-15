@@ -12,8 +12,11 @@ namespace OnlineShope.Applicaition.Models
         public int Id { get; set; }
         public string? ProductName { get; set; }
         public long Price { get; set; }
-        public long? PriceWithComma { get; set; }
+        public string? PriceWithComma { get; set; }
         public IFormFile Thumbnail { get; set; }
- 
+
+        public string ThumbnailBase64 { get; set; }
+        public string ThumbnailURL { get; set; }
+
     }   
 }

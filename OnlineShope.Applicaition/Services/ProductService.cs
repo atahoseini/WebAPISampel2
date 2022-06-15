@@ -25,14 +25,18 @@ namespace OnlineShope.Applicaition.Services
             //بخش ذخیره تصوریر در جلسه هفتم
             var product = new Product
             {
-                ProductName = model.ProductName,
                 Price=model.Price,
+                ProductName = model.ProductName,
+                //save in folder
+                ThumbnailFileName=myFileUtility.SaveFileInFolder(model.Thumbnail,nameof(Product),true),
                 //db=>byte[]
-                Thubmnail=myFileUtility.ConvertToByteArray(model.Thumbnail),
-                ThumbnailFileExtension=myFileUtility.GetFileExtension(model.Thumbnail.FileName),
-                ThumbnailFileName= model.Thumbnail.FileName,
+                Thumbnail= myFileUtility.EncryptFile(myFileUtility.ConvertToByteArray(model.Thumbnail)),
+                ThumbnailFileExtenstion=myFileUtility.GetFileExtension(model.Thumbnail.FileName),
                 ThumbnailFileSize=model.Thumbnail.Length,
             };
+
+
+
             //var product = mapper.Map<Product>(model);
             await dbContext.AddAsync(product);
             await dbContext.SaveChangesAsync();
@@ -44,20 +48,32 @@ namespace OnlineShope.Applicaition.Services
         {
             var product = await dbContext.Products.FindAsync(id);
 
-            if (product != null)
-            {
-                //var model = new ProductDto
-                //{
-                //    ProductName = product.ProductName,
-                //    Id = product.Id,
-                //    Price = product.Price,
+            //if (product != null)
+            //{
+            //    var model = new ProductDto
+            //    {
+            //        ProductName = product.ProductName,
+            //        Id = product.Id,
+            //        Price = product.Price,
 
-                //};
-                var model = mapper.Map<ProductDto>(product);
-                return model;
-            }
-            else
-                return null;
+            //    };
+            //    var model = mapper.Map<ProductDto>(product);
+            //    return model;
+            //}
+            //else
+            //    return null;
+            var model = new ProductDto
+            {
+                ProductName = product.ProductName,
+                Id = product.Id,
+                Price = product.Price,
+                PriceWithComma=product.Price.ToString("##.##"),
+                ThumbnailBase64 = myFileUtility.ConvertToBase64(product.Thumbnail),
+                ThumbnailURL = myFileUtility.GetFileUrl(product.ThumbnailFileName,nameof(product)),
+
+            };
+           // var model = mapper.Map<ProductDto>(product);
+            return model;
         }
 
         public async Task<List<ProductDto>> GetAll()
