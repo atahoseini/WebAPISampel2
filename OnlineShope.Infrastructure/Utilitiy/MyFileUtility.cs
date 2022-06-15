@@ -51,6 +51,7 @@ namespace OnlineShope.Infrastructure.Utilitiy
             using var writer = new BinaryWriter(System.IO.File.OpenWrite(newFilePath));
             writer.Write(byteArray);
             return newFileName;
+
         }
 
         //private string GetEntityFolderUrl(string host, string entityName, bool isHttps)
