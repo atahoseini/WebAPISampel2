@@ -1,23 +1,34 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using OnlineShope.API.CustomAttributes;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.AccessControl;
+using System.Security.Cryptography;
+
 
 namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;
+        private readonly IWebHostEnvironment environment;
+        private readonly IConfiguration configuration;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IWebHostEnvironment environment,
+            IConfiguration configuration)
         {
-            this.productService=productService;
+            this.productService = productService;
+            this.environment = environment;
+            this.configuration = configuration;
         }
+
+
         [HttpGet("{id}")]
         //[SwaggerOperation(
         //  Summary = "Get a Product",
@@ -33,16 +44,29 @@ namespace OnlineShope.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page = 1, int size = 3)
         {
-            var result=await productService.GetAll();
+            var result=await productService.GetAll(page,size);
             return Ok(result);
         }
-        
+
+
+        [HttpGet("GetFileContent")]
+        [AllowAnonymous]
+        public async Task<FileContentResult> GetFileContent(string fileUrl)
+        {
+            var urlSections = fileUrl.Split("/");
+            //read file and decrypt content
+            byte[] encryptedData = await System.IO.File.ReadAllBytesAsync("");
+            var decryptedData = Decrypt(encryptedData);
+
+            return new FileContentResult(decryptedData, "application/txt");
+        }
+
+
         [HttpPost]
         //[AccessControl( Permission ="product-add")]
         [AllowAnonymous]
-
         public async Task<IActionResult> Create([FromForm]ProductDto model)
         {
             var result= await productService.Add(model);
@@ -75,7 +99,48 @@ namespace OnlineShope.API.Controllers
             }
             return Ok();
         }
+        private byte[] Encrypt(byte[] fileContent)
+        {
+            string EncryptionKey = "MAKV2SPBNI54324";
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
 
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(fileContent, 0, fileContent.Length);
+                        cryptoStream.FlushFinalBlock();
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+        }
+
+        private byte[] Decrypt(byte[] fileContent)
+        {
+            string EncryptionKey = "MAKV2SPBNI54324";
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(fileContent, 0, fileContent.Length);
+                        cryptoStream.FlushFinalBlock();
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+        }
         //[HttpPut]
         //public async Task<IActionResult> Edit(ProductDto model)
         //{

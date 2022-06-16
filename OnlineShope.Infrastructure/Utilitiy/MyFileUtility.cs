@@ -23,13 +23,13 @@ namespace OnlineShope.Infrastructure.Utilitiy
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        //public string GetFileFullPath(string fileName, string enityName)
-        //{
-        //    var appRootPath = enviroment.WebRootPath;
-        //    var mediaRootPath = configuration.GetValue<string>("MediaPath");
+        public string GetFileFullPath(string fileName, string enityName)
+        {
+            var appRootPath = enviroment.WebRootPath;
+            var mediaRootPath = configuration.GetValue<string>("MediaPath");
 
-        //    return Path.Combine(appRootPath, mediaRootPath, enityName, fileName);
-        //}
+            return Path.Combine(appRootPath, mediaRootPath, enityName, fileName);
+        }
 
 
         public string SaveFileInFolder(IFormFile file, string enityName, bool isEncrypt = false)

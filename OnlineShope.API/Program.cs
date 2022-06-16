@@ -62,7 +62,10 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddDbContext<OnlineShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineShopConnection"));
+            //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+     
 });
+
 
 builder.Services.AddJWT();
 builder.Services.AddSwagger();

@@ -9,7 +9,7 @@ namespace OnlineShope.Applicaition.Interfaces
 {
     public interface IProductService
     {
-        Task<List<ProductDto>> GetAll();
+        Task<List<ProductDto>> GetAll(int page=1, int size=3);
         Task<ProductDto> Get(int id);
         Task<ProductDto> Add(ProductDto model);
         Task<ProductDto> Update(ProductDto model);

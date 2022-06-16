@@ -68,7 +68,7 @@ namespace OnlineShope.Applicaition.Services
                 Id = product.Id,
                 Price = product.Price,
                 PriceWithComma=product.Price.ToString("##.##"),
-                ThumbnailBase64 = myFileUtility.ConvertToBase64(product.Thumbnail),
+                ThumbnailBase64 = myFileUtility.ConvertToBase64(myFileUtility.DecryptFile(product.Thumbnail)),
                 ThumbnailURL = myFileUtility.GetFileUrl(product.ThumbnailFileName,nameof(product)),
 
             };
@@ -76,20 +76,21 @@ namespace OnlineShope.Applicaition.Services
             return model;
         }
 
-        public async Task<List<ProductDto>> GetAll()
+        public async Task<List<ProductDto>> GetAll(int page = 1, int size = 3)
         {
-            var result = await dbContext.Products.Select(Product => new ProductDto
-            {
-                Price = Product.Price,
-                ProductName = Product.ProductName,
-                Id=Product.Id,
-            }).ToListAsync();
 
-            //Automapper
-            //var products = dbContext.Products.ToList();
-            //var result = mapper.Map<List<ProductDto>>(products);
 
-            return result;
+            var products = await dbContext.Products
+                .Skip((page-1)*size).Take(size)
+                .AsNoTracking()
+                .Select(Product => new ProductDto
+                {
+                    Price = Product.Price,
+                    ProductName = Product.ProductName,
+                    Id=Product.Id,
+                }).ToListAsync();
+
+            return products;
         }
 
         public async Task<ProductDto> Delete(int id)
