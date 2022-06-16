@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShope.Applicaition.CQRS.AuthenticateCommandQuery.Command;
+using StackExchange.Profiling;
 
 namespace OnlineShope.API.Controllers
 {
@@ -20,8 +21,11 @@ namespace OnlineShope.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(LoginCommand loginCommand)
         {
-            var result=await mediator.Send(loginCommand);
-            return Ok(result);
+            using (MiniProfiler.Current.Step("Login method"))
+            {
+                var result = await mediator.Send(loginCommand);
+                return Ok(result);
+            }
         }
 
 

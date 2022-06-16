@@ -13,6 +13,7 @@ using OnlineShope.Core.IRepositories;
 using OnlineShope.Infrastructure;
 using OnlineShope.Infrastructure.Model;
 using OnlineShope.Infrastructure.Repository;
+using Serilog;
 using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -22,6 +23,7 @@ using static System.Net.Mime.MediaTypeNames;
 //var builder = WebApplication.CreateBuilder(args);
 
 
+//var builder = WebApplication.CreateBuilder(args);
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     ApplicationName = typeof(Program).Assembly.FullName,
@@ -30,6 +32,19 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     Args = args
 });
 
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+//add SignalR
+builder.Services.AddSignalR();
+
+//fill configs from appsetting.json
 builder.Services.AddOptions();
 builder.Services.Configure<Configs>(builder.Configuration.GetSection("Configs"));
 
@@ -65,7 +80,9 @@ builder.Services.AddDbContext<OnlineShopDbContext>(options =>
             //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
      
 });
-
+//Add MiniProfiler
+builder.Services.AddMemoryCache();
+builder.Services.AddMiniProfiler(options => options.RouteBasePath = "/profiler").AddEntityFramework();
 
 builder.Services.AddJWT();
 builder.Services.AddSwagger();
@@ -93,6 +110,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiniProfiler();
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -101,6 +120,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+app.UseCors("MyAPI");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

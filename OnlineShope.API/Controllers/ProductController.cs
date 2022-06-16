@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using OnlineShope.API.CustomAttributes;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
+using StackExchange.Profiling;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -13,6 +15,7 @@ namespace OnlineShope.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("MyAPI")] //=> گفتگوی چند دامنه و دسترسی ها
     //[Authorize]
     public class ProductController : ControllerBase
     {
@@ -46,8 +49,11 @@ namespace OnlineShope.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int page = 1, int size = 3)
         {
-            var result=await productService.GetAll(page,size);
-            return Ok(result);
+            using (MiniProfiler.Current.Step("Product GetAll Controller"))
+            {
+                var result = await productService.GetAll(page, size);
+                return Ok(result);
+            }
         }
 
 

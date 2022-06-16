@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OnlineShope.Applicaition.Interfaces;
 using OnlineShope.Applicaition.Models;
 using OnlineShope.Core;
 using OnlineShope.Core.Entities;
+using OnlineShope.Infrastructure.Model;
 using OnlineShope.Infrastructure.Utilitiy;
 
 namespace OnlineShope.Applicaition.Services
@@ -13,15 +15,21 @@ namespace OnlineShope.Applicaition.Services
         private readonly OnlineShopDbContext dbContext;
         private readonly IMapper mapper;
         private readonly MyFileUtility myFileUtility;
+        private readonly ILogger<ProductService> logger;
 
-        public ProductService(OnlineShopDbContext dbContext, IMapper mapper, MyFileUtility myFileUtility)
+        public ProductService(OnlineShopDbContext dbContext, IMapper mapper,
+            MyFileUtility myFileUtility, ILogger<ProductService> logger)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.myFileUtility=myFileUtility;
+            this.logger=logger;
+            this.logger=logger;
         }
         public async Task<ProductDto> Add(ProductDto model)
         {
+            logger.LogInformation("Call Add from ProductDervice");
+
             //بخش ذخیره تصوریر در جلسه هفتم
             var product = new Product
             {
@@ -76,11 +84,16 @@ namespace OnlineShope.Applicaition.Services
             return model;
         }
 
-        public async Task<List<ProductDto>> GetAll(int page = 1, int size = 3)
+        //public async Task<List<ProductDto>> GetAll(int page = 1, int size = 3)
+        public async Task<ShopActionResult<List<ProductDto>>> GetAll(int page = 1, int size = 3)
         {
+            logger.LogInformation("Call GetAll from ProductDervice");
 
+            var result = new ShopActionResult<List<ProductDto>>();
 
-            var products = await dbContext.Products
+            try
+            {
+                var products = await dbContext.Products
                 .Skip((page-1)*size).Take(size)
                 .AsNoTracking()
                 .Select(Product => new ProductDto
@@ -89,8 +102,26 @@ namespace OnlineShope.Applicaition.Services
                     ProductName = Product.ProductName,
                     Id=Product.Id,
                 }).ToListAsync();
+                var totalRecordCount = await dbContext.Products.CountAsync();
 
-            return products;
+                result.IsSuccess=true;
+                result.Data=products;
+                result.Page=page;
+                result.Size=size;
+                result.Total=totalRecordCount;
+
+                logger.LogInformation("GetAll from ProductDervice success call");
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.ToString());
+                result.IsSuccess=false;
+                result.Message=ex.Message;
+            }
+            
+
+            return result;
         }
 
         public async Task<ProductDto> Delete(int id)
