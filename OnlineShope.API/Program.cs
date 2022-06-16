@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using OnlineShope.API;
+using OnlineShope.API.Hubs;
 using OnlineShope.Applicaition;
 using OnlineShope.Applicaition.CQRS.ProductCommandQuery.Command;
 using OnlineShope.Applicaition.Interfaces;
@@ -128,5 +129,7 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
